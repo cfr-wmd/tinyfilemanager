@@ -1,10 +1,11 @@
 <?php
 //Default Configuration
+global $CONFIG;
 $CONFIG = '{"lang":"en","error_reporting":false,"show_hidden":false,"hide_Cols":false,"theme":"light"}';
 
 /**
  * H3K | Tiny File Manager V2.5.3
- * @author CCP Programmers
+ * @author Prasath Mani | CCP Programmers
  * @email ccpprogrammers@gmail.com
  * @github https://github.com/prasathmani/tinyfilemanager
  * @link https://tinyfilemanager.github.io
@@ -77,12 +78,6 @@ $iconv_input_encoding = 'UTF-8';
 // Doc - https://www.php.net/manual/en/function.date.php
 $datetime_format = 'm/d/Y g:i A';
 
-// Path display mode when viewing file information
-// 'full' => show full path
-// 'relative' => show path relative to root_path
-// 'host' => show path on the host
-$path_display_mode = 'full';
-
 // Allowed file extensions for create and rename files
 // e.g. 'txt,html,css,js'
 $allowed_file_extensions = '';
@@ -98,7 +93,7 @@ $favicon_path = '';
 
 // Files and folders to excluded from listing
 // e.g. array('myfile.html', 'personal-folder', '*.php', ...)
-$exclude_items = array();
+$GLOBALS['exclude_items'] = array();
 
 // Online office Docs Viewer
 // Availabe rules are 'google', 'microsoft' or false
@@ -110,7 +105,7 @@ $online_viewer = 'google';
 // Sticky Nav bar
 // true => enable sticky header
 // false => disable sticky header
-$sticky_navbar = true;
+$GLOBALS['sticky_navbar'] = true;
 
 // Maximum file upload size
 // Increase the following values in php.ini to work properly
@@ -142,28 +137,26 @@ $ip_blacklist = array(
     '::'            // non-routable meta ipv6
 );
 
+// External CDN resources that can be used in the HTML (replace for GDPR compliance)
+$GLOBALS['external'] = array(
+    'css-bootstrap' => '<link href="/libraries/tinyfilemanager/assets/css/bootstrap.min.css" rel="stylesheet">',
+    'css-dropzone' => '<link href="/libraries/tinyfilemanager/assets/css/dropzone.min.css" rel="stylesheet">',
+    'css-font-awesome' => '<link rel="stylesheet" href="/libraries/tinyfilemanager/assets/css/font-awesome.min.css" crossorigin="anonymous">',
+    'css-highlightjs' => '<link rel="stylesheet" href="/libraries/tinyfilemanager/assets/css/' . $highlightjs_style . '.min.css">',
+    'js-ace' => '<script src="/libraries/tinyfilemanager/assets/js/ace.js"></script>',
+    'js-bootstrap' => '<script src="/libraries/tinyfilemanager/assets/js/bootstrap.bundle.min.js"></script>',
+    'js-dropzone' => '<script src="/libraries/tinyfilemanager/assets/js/dropzone.min.js"></script>',
+    'js-jquery' => '<script src="/libraries/tinyfilemanager/assets/js/jquery-3.6.1.min.js"></script>',
+    'js-jquery-datatables' => '<script src="/libraries/tinyfilemanager/assets/js/datatables.min.js"></script>',
+    'js-highlightjs' => '<script src="/libraries/tinyfilemanager/assets/js/highlight.min.js"></script>',
+);
+
 // if User has the external config file, try to use it to override the default config above [config.php]
 // sample config - https://tinyfilemanager.github.io/config-sample.txt
 $config_file = __DIR__.'/config.php';
 if (is_readable($config_file)) {
     @include($config_file);
 }
-
-// External CDN resources that can be used in the HTML (replace for GDPR compliance)
-$external = array(
-    'css-bootstrap' => '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">',
-    'css-dropzone' => '<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css" rel="stylesheet">',
-    'css-font-awesome' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">',
-    'css-highlightjs' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/' . $highlightjs_style . '.min.css">',
-    'js-ace' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ace.js"></script>',
-    'js-bootstrap' => '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>',
-    'js-dropzone' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>',
-    'js-jquery' => '<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>',
-    'js-jquery-datatables' => '<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" crossorigin="anonymous" defer></script>',
-    'js-highlightjs' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>',
-    'pre-jsdelivr' => '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"/>',
-    'pre-cloudflare' => '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin/><link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>'
-);
 
 // --- EDIT BELOW CAREFULLY OR DO NOT EDIT AT ALL ---
 
@@ -182,28 +175,28 @@ if ( !defined( 'FM_SESSION_ID')) {
 $cfg = new FM_Config();
 
 // Default language
-$lang = isset($cfg->data['lang']) ? $cfg->data['lang'] : 'en';
+$GLOBALS['lang'] = isset($cfg->data['lang']) ? $cfg->data['lang'] : 'en';
 
 // Show or hide files and folders that starts with a dot
-$show_hidden_files = isset($cfg->data['show_hidden']) ? $cfg->data['show_hidden'] : true;
+$GLOBALS['show_hidden_files'] = isset($cfg->data['show_hidden']) ? $cfg->data['show_hidden'] : true;
 
 // PHP error reporting - false = Turns off Errors, true = Turns on Errors
-$report_errors = isset($cfg->data['error_reporting']) ? $cfg->data['error_reporting'] : true;
+$GLOBALS['report_errors'] = isset($cfg->data['error_reporting']) ? $cfg->data['error_reporting'] : true;
 
 // Hide Permissions and Owner cols in file-listing
-$hide_Cols = isset($cfg->data['hide_Cols']) ? $cfg->data['hide_Cols'] : true;
+$GLOBALS['hide_Cols'] = isset($cfg->data['hide_Cols']) ? $cfg->data['hide_Cols'] : true;
 
 // Theme
-$theme = isset($cfg->data['theme']) ? $cfg->data['theme'] : 'light';
+$GLOBALS['theme'] = isset($cfg->data['theme']) ? $cfg->data['theme'] : 'light';
 
 define('FM_THEME', $theme);
 
 //available languages
-$lang_list = array(
+$GLOBALS['lang_list'] = array(
     'en' => 'English'
 );
 
-if ($report_errors == true) {
+if ($GLOBALS['report_errors'] == true) {
     @ini_set('error_reporting', E_ALL);
     @ini_set('display_errors', 1);
 } else {
@@ -214,7 +207,7 @@ if ($report_errors == true) {
 // if fm included
 if (defined('FM_EMBED')) {
     $use_auth = false;
-    $sticky_navbar = false;
+    $GLOBALS['sticky_navbar'] = false;
 } else {
     @set_time_limit(600);
 
@@ -228,7 +221,7 @@ if (defined('FM_EMBED')) {
         mb_regex_encoding('UTF-8');
     }
 
-    session_cache_limiter('nocache'); // Prevent logout issue after page was cached
+    session_cache_limiter('');
     session_name(FM_SESSION_ID );
     function session_error_handling_function($code, $msg, $file, $line) {
         // Permission denied for default session, try to create a new one
@@ -243,13 +236,9 @@ if (defined('FM_EMBED')) {
     restore_error_handler();
 }
 
-//Generating CSRF Token
+//Genrating CSRF Token
 if (empty($_SESSION['token'])) {
-    if (function_exists('random_bytes')) {
-        $_SESSION['token'] = bin2hex(random_bytes(32));
-    } else {
-    	$_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
-    }
+    $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 
 if (empty($auth_users)) {
@@ -261,7 +250,7 @@ $is_https = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['
 
 // update $root_url based on user specific directories
 if (isset($_SESSION[FM_SESSION_ID]['logged']) && !empty($directories_users[$_SESSION[FM_SESSION_ID]['logged']])) {
-    $wd = fm_clean_path(dirname($_SERVER['PHP_SELF']));
+    $wd = fm_clean_path(dirname(FM_BASE_PATH));
     $root_url =  $root_url.$wd.DIRECTORY_SEPARATOR.$directories_users[$_SESSION[FM_SESSION_ID]['logged']];
 }
 // clean $root_url
@@ -269,7 +258,7 @@ $root_url = fm_clean_path($root_url);
 
 // abs path for site
 defined('FM_ROOT_URL') || define('FM_ROOT_URL', ($is_https ? 'https' : 'http') . '://' . $http_host . (!empty($root_url) ? '/' . $root_url : ''));
-defined('FM_SELF_URL') || define('FM_SELF_URL', ($is_https ? 'https' : 'http') . '://' . $http_host . $_SERVER['PHP_SELF']);
+defined('FM_SELF_URL') || define('FM_SELF_URL', ($is_https ? 'https' : 'http') . '://' . $http_host . FM_BASE_PATH);
 
 // logout
 if (isset($_GET['logout'])) {
@@ -332,11 +321,11 @@ if ($use_auth) {
             if (isset($auth_users[$_POST['fm_usr']]) && isset($_POST['fm_pwd']) && password_verify($_POST['fm_pwd'], $auth_users[$_POST['fm_usr']]) && verifyToken($_POST['token'])) {
                 $_SESSION[FM_SESSION_ID]['logged'] = $_POST['fm_usr'];
                 fm_set_msg(lng('You are logged in'));
-                fm_redirect(FM_SELF_URL);
+                fm_redirect(FM_ROOT_URL);
             } else {
                 unset($_SESSION[FM_SESSION_ID]['logged']);
                 fm_set_msg(lng('Login failed. Invalid username or password'), 'error');
-                fm_redirect(FM_SELF_URL);
+                fm_redirect(FM_ROOT_URL);
             }
         } else {
             fm_set_msg(lng('password_hash not supported, Upgrade PHP version'), 'error');;
@@ -417,12 +406,12 @@ if (!@is_dir($root_path)) {
     exit;
 }
 
-defined('FM_SHOW_HIDDEN') || define('FM_SHOW_HIDDEN', $show_hidden_files);
+defined('FM_SHOW_HIDDEN') || define('FM_SHOW_HIDDEN', $GLOBALS['show_hidden_files']);
 defined('FM_ROOT_PATH') || define('FM_ROOT_PATH', $root_path);
-defined('FM_LANG') || define('FM_LANG', $lang);
+defined('FM_LANG') || define('FM_LANG', $GLOBALS['lang']);
 defined('FM_FILE_EXTENSION') || define('FM_FILE_EXTENSION', $allowed_file_extensions);
 defined('FM_UPLOAD_EXTENSION') || define('FM_UPLOAD_EXTENSION', $allowed_upload_extensions);
-defined('FM_EXCLUDE_ITEMS') || define('FM_EXCLUDE_ITEMS', (version_compare(PHP_VERSION, '7.0.0', '<') ? serialize($exclude_items) : $exclude_items));
+defined('FM_EXCLUDE_ITEMS') || define('FM_EXCLUDE_ITEMS', (version_compare(PHP_VERSION, '7.0.0', '<') ? serialize($GLOBALS['exclude_items']) : $GLOBALS['exclude_items']));
 defined('FM_DOC_VIEWER') || define('FM_DOC_VIEWER', $online_viewer);
 define('FM_READONLY', $global_readonly || ($use_auth && !empty($readonly_users) && isset($_SESSION[FM_SESSION_ID]['logged']) && in_array($_SESSION[FM_SESSION_ID]['logged'], $readonly_users)));
 define('FM_IS_WIN', DIRECTORY_SEPARATOR == '\\');
@@ -529,10 +518,9 @@ if ((isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_
 
     // Save Config
     if (isset($_POST['type']) && $_POST['type'] == "settings") {
-        global $cfg, $lang, $report_errors, $show_hidden_files, $lang_list, $hide_Cols, $theme;
         $newLng = $_POST['js-language'];
         fm_get_translations([]);
-        if (!array_key_exists($newLng, $lang_list)) {
+        if (!array_key_exists($newLng, $GLOBALS['lang_list'])) {
             $newLng = 'en';
         }
 
@@ -543,27 +531,27 @@ if ((isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_
 
         if ($cfg->data['lang'] != $newLng) {
             $cfg->data['lang'] = $newLng;
-            $lang = $newLng;
+            $GLOBALS['lang'] = $newLng;
         }
         if ($cfg->data['error_reporting'] != $erp) {
             $cfg->data['error_reporting'] = $erp;
-            $report_errors = $erp;
+            $GLOBALS['report_errors'] = $erp;
         }
         if ($cfg->data['show_hidden'] != $shf) {
             $cfg->data['show_hidden'] = $shf;
-            $show_hidden_files = $shf;
+            $GLOBALS['show_hidden_files'] = $shf;
         }
         if ($cfg->data['show_hidden'] != $shf) {
             $cfg->data['show_hidden'] = $shf;
-            $show_hidden_files = $shf;
+            $GLOBALS['show_hidden_files'] = $shf;
         }
         if ($cfg->data['hide_Cols'] != $hco) {
             $cfg->data['hide_Cols'] = $hco;
-            $hide_Cols = $hco;
+            $GLOBALS['hide_Cols'] = $hco;
         }
         if ($cfg->data['theme'] != $te3) {
             $cfg->data['theme'] = $te3;
-            $theme = $te3;
+            $GLOBALS['theme'] = $te3;
         }
         $cfg->save();
         echo true;
@@ -587,7 +575,7 @@ if ((isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_
             echo json_encode($message);
         }
 
-        function get_file_path () {
+        function get_file_path ($fileinfo = [], $path = '') {
             global $path, $fileinfo, $temp_file;
             return $path."/".basename($fileinfo->name);
         }
@@ -648,7 +636,7 @@ if ((isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_
         }
 
         if ($success) {
-            $success = rename($temp_file, strtok(get_file_path(), '?'));
+            $success = rename($temp_file, strtok(get_file_path($fileinfo, $path), '?'));
         }
 
         if ($success) {
@@ -780,7 +768,7 @@ if (isset($_GET['copy'], $_GET['finish']) && !FM_READONLY) {
                $loop_count++;
             }
             if (fm_rcopy($from, $fn_duplicate, False)) {
-                fm_set_msg(sprintf('Copied from <b>%s</b> to <b>%s</b>', fm_enc($copy), fm_enc($fn_duplicate)));
+                fm_set_msg(sprintf('Copyied from <b>%s</b> to <b>%s</b>', fm_enc($copy), fm_enc($fn_duplicate)));
             } else {
                 fm_set_msg(sprintf('Error while copying from <b>%s</b> to <b>%s</b>', fm_enc($copy), fm_enc($fn_duplicate)), 'error');
             }
@@ -924,6 +912,7 @@ if (!empty($_FILES) && !FM_READONLY) {
         echo json_encode($response); exit();
     }
 
+    $override_file_name = false;
     $chunkIndex = $_POST['dzchunkindex'];
     $chunkTotal = $_POST['dztotalchunkcount'];
     $fullPathInput = fm_clean_path($_REQUEST['fullpath']);
@@ -958,8 +947,13 @@ if (!empty($_FILES) && !FM_READONLY) {
 
     $targetPath = $path . $ds;
     if ( is_writable($targetPath) ) {
-        $fullPath = $path . '/' . $fullPathInput;
+        $fullPath = $path . '/' . basename($fullPathInput);
         $folder = substr($fullPath, 0, strrpos($fullPath, "/"));
+
+        if(file_exists ($fullPath) && !$override_file_name && !$chunks) {
+            $ext_1 = $ext ? '.'.$ext : '';
+            $fullPath = $path . '/' . basename($fullPathInput, $ext_1) .'_'. date('ymdHis'). $ext_1;
+        }
 
         if (!is_dir($folder)) {
             $old = umask(0);
@@ -973,20 +967,7 @@ if (!empty($_FILES) && !FM_READONLY) {
                 if ($out) {
                     $in = @fopen($tmp_name, "rb");
                     if ($in) {
-                        if (PHP_VERSION_ID < 80009) {
-                            // workaround https://bugs.php.net/bug.php?id=81145
-                            do {
-                                for (;;) {
-                                    $buff = fread($in, 4096);
-                                    if ($buff === false || $buff === '') {
-                                        break;
-                                    }
-                                    fwrite($out, $buff);
-                                }
-                            } while (!feof($in));
-                        } else {
-                            stream_copy_to_stream($in, $out);
-                        }
+                        while ($buff = fread($in, 4096)) { fwrite($out, $buff); }
                         $response = array (
                             'status'    => 'success',
                             'info' => "file upload successful"
@@ -1014,13 +995,7 @@ if (!empty($_FILES) && !FM_READONLY) {
                 }
 
                 if ($chunkIndex == $chunkTotal - 1) {
-                    if (file_exists ($fullPath)) {
-                        $ext_1 = $ext ? '.'.$ext : '';
-                        $fullPathTarget = $path . '/' . basename($fullPathInput, $ext_1) .'_'. date('ymdHis'). $ext_1;
-                    } else {
-                        $fullPathTarget = $fullPath;
-                    }
-                    rename("{$fullPath}.part", $fullPathTarget);
+                    rename("{$fullPath}.part", $fullPath);
                 }
 
             } else if (move_uploaded_file($tmp_name, $fullPath)) {
@@ -1507,7 +1482,6 @@ if (isset($_GET['copy']) && !isset($_GET['finish']) && !FM_READONLY) {
 if (isset($_GET['settings']) && !FM_READONLY) {
     fm_show_header(); // HEADER
     fm_show_nav_path(FM_PATH); // current path
-    global $cfg, $lang, $lang_list;
     ?>
 
     <div class="col-md-8 offset-md-2 pt-3">
@@ -1525,10 +1499,9 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                             <select class="form-select" id="js-language" name="js-language">
                                 <?php
                                 function getSelected($l) {
-                                    global $lang;
-                                    return ($lang == $l) ? 'selected' : '';
+                                    return ($GLOBALS['lang'] == $l) ? 'selected' : '';
                                 }
-                                foreach ($lang_list as $k => $v) {
+                                foreach ($GLOBALS['lang_list'] as $k => $v) {
                                     echo "<option value='$k' ".getSelected($k).">$v</option>";
                                 }
                                 ?>
@@ -1539,7 +1512,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                         <label for="js-error-report" class="col-sm-3 col-form-label"><?php echo lng('ErrorReporting') ?></label>
                         <div class="col-sm-9">
                             <div class="form-check form-switch">
-                              <input class="form-check-input" type="checkbox" role="switch" id="js-error-report" name="js-error-report" value="true" <?php echo $report_errors ? 'checked' : ''; ?> />
+                              <input class="form-check-input" type="checkbox" role="switch" id="js-error-report" name="js-error-report" value="true" <?php echo $GLOBALS['report_errors'] ? 'checked' : ''; ?> />
                             </div>
                         </div>
                     </div>
@@ -1548,7 +1521,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                         <label for="js-show-hidden" class="col-sm-3 col-form-label"><?php echo lng('ShowHiddenFiles') ?></label>
                         <div class="col-sm-9">
                             <div class="form-check form-switch">
-                              <input class="form-check-input" type="checkbox" role="switch" id="js-show-hidden" name="js-show-hidden" value="true" <?php echo $show_hidden_files ? 'checked' : ''; ?> />
+                              <input class="form-check-input" type="checkbox" role="switch" id="js-show-hidden" name="js-show-hidden" value="true" <?php echo $GLOBALS['show_hidden_files'] ? 'checked' : ''; ?> />
                             </div>
                         </div>
                     </div>
@@ -1557,7 +1530,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                         <label for="js-hide-cols" class="col-sm-3 col-form-label"><?php echo lng('HideColumns') ?></label>
                         <div class="col-sm-9">
                             <div class="form-check form-switch">
-                              <input class="form-check-input" type="checkbox" role="switch" id="js-hide-cols" name="js-hide-cols" value="true" <?php echo $hide_Cols ? 'checked' : ''; ?> />
+                              <input class="form-check-input" type="checkbox" role="switch" id="js-hide-cols" name="js-hide-cols" value="true" <?php echo $GLOBALS['hide_Cols'] ? 'checked' : ''; ?> />
                             </div>
                         </div>
                     </div>
@@ -1647,7 +1620,7 @@ if (isset($_GET['view'])) {
     $file = $_GET['view'];
     $file = fm_clean_path($file, false);
     $file = str_replace('/', '', $file);
-    if ($file == '' || !is_file($path . '/' . $file) || !fm_is_exclude_items($file)) {
+    if ($file == '' || !is_file($path . '/' . $file) || in_array($file, $GLOBALS['exclude_items'])) {
         fm_set_msg(lng('File not found'), 'error');
         $FM_PATH=FM_PATH; fm_redirect(FM_SELF_URL . '?p=' . urlencode($FM_PATH));
     }
@@ -1702,8 +1675,7 @@ if (isset($_GET['view'])) {
         <div class="col-12">
             <p class="break-word"><b><?php echo lng($view_title) ?> "<?php echo fm_enc(fm_convert_win($file)) ?>"</b></p>
             <p class="break-word">
-                <?php $display_path = fm_get_display_path($file_path); ?>
-                <strong><?php echo $display_path['label']; ?>:</strong> <?php echo $display_path['path']; ?><br>
+                <strong>Full path:</strong> <?php echo fm_enc(fm_convert_win($file_path)) ?><br>
                 <strong>File size:</strong> <?php echo ($filesize_raw <= 1000) ? "$filesize_raw bytes" : $filesize; ?><br>
                 <strong>MIME-type:</strong> <?php echo $mime_type ?><br>
                 <?php
@@ -1729,7 +1701,7 @@ if (isset($_GET['view'])) {
                 // Image info
                 if ($is_image) {
                     $image_size = getimagesize($file_path);
-                    echo '<strong>'.lng('Image size').':</strong> ' . (isset($image_size[0]) ? $image_size[0] : '0') . ' x ' . (isset($image_size[1]) ? $image_size[1] : '0') . '<br>';
+                    echo lng('Image sizes').': ' . (isset($image_size[0]) ? $image_size[0] : '0') . ' x ' . (isset($image_size[1]) ? $image_size[1] : '0') . '<br>';
                 }
                 // Text info
                 if ($is_text) {
@@ -1802,7 +1774,7 @@ if (isset($_GET['view'])) {
             } elseif ($is_image) {
                 // Image content
                 if (in_array($ext, array('gif', 'jpg', 'jpeg', 'png', 'bmp', 'ico', 'svg', 'webp', 'avif'))) {
-                    echo '<p><input type="checkbox" id="preview-img-zoomCheck"><label for="preview-img-zoomCheck"><img src="' . fm_enc($file_url) . '" alt="image" class="preview-img"></label></p>';
+                    echo '<p><img src="' . fm_enc($file_url) . '" alt="image" class="preview-img-container" class="preview-img"></p>';
                 }
             } elseif ($is_audio) {
                 // Audio content
@@ -1846,7 +1818,7 @@ if (isset($_GET['edit']) && !FM_READONLY) {
     $file = $_GET['edit'];
     $file = fm_clean_path($file, false);
     $file = str_replace('/', '', $file);
-    if ($file == '' || !is_file($path . '/' . $file) || !fm_is_exclude_items($file)) {
+    if ($file == '' || !is_file($path . '/' . $file) || in_array($file, $GLOBALS['exclude_items'])) {
         fm_set_msg(lng('File not found'), 'error');
         $FM_PATH=FM_PATH; fm_redirect(FM_SELF_URL . '?p=' . urlencode($FM_PATH));
     }
@@ -1962,8 +1934,7 @@ if (isset($_GET['chmod']) && !FM_READONLY && !FM_IS_WIN) {
             </h6>
             <div class="card-body">
                 <p class="card-text">
-                    <?php $display_path = fm_get_display_path($file_path); ?>
-                    <?php echo $display_path['label']; ?>: <?php echo $display_path['path']; ?><br>
+                    Full path: <?php echo $file_path ?><br>
                 </p>
                 <form action="" method="post">
                     <input type="hidden" name="p" value="<?php echo fm_enc(FM_PATH) ?>">
@@ -2040,7 +2011,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 <th><?php echo lng('Name') ?></th>
                 <th><?php echo lng('Size') ?></th>
                 <th><?php echo lng('Modified') ?></th>
-                <?php if (!FM_IS_WIN && !$hide_Cols): ?>
+                <?php if (!FM_IS_WIN && !$GLOBALS['hide_Cols']): ?>
                     <th><?php echo lng('Perms') ?></th>
                     <th><?php echo lng('Owner') ?></th><?php endif; ?>
                 <th><?php echo lng('Actions') ?></th>
@@ -2056,7 +2027,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                     <td class="border-0" data-order></td>
                     <td class="border-0" data-order></td>
                     <td class="border-0"></td>
-                    <?php if (!FM_IS_WIN && !$hide_Cols) { ?>
+                    <?php if (!FM_IS_WIN && !$GLOBALS['hide_Cols']) { ?>
                         <td class="border-0"></td>
                         <td class="border-0"></td>
                     <?php } ?>
@@ -2076,12 +2047,6 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 if (function_exists('posix_getpwuid') && function_exists('posix_getgrgid')) {
                     $owner = posix_getpwuid(fileowner($path . '/' . $f));
                     $group = posix_getgrgid(filegroup($path . '/' . $f));
-                    if ($owner === false) {
-                        $owner = array('name' => '?');
-                    }
-                    if ($group === false) {
-                        $group = array('name' => '?');
-                    }
                 } else {
                     $owner = array('name' => '?');
                     $group = array('name' => '?');
@@ -2103,7 +2068,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                         <?php echo $filesize; ?>
                     </td>
                     <td data-order="a-<?php echo $date_sorting;?>"><?php echo $modif ?></td>
-                    <?php if (!FM_IS_WIN && !$hide_Cols): ?>
+                    <?php if (!FM_IS_WIN && !$GLOBALS['hide_Cols']): ?>
                         <td><?php if (!FM_READONLY): ?><a title="Change Permissions" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;chmod=<?php echo urlencode($f) ?>"><?php echo $perms ?></a><?php else: ?><?php echo $perms ?><?php endif; ?>
                         </td>
                         <td><?php echo $owner['name'] . ':' . $group['name'] ?></td>
@@ -2135,12 +2100,6 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 if (function_exists('posix_getpwuid') && function_exists('posix_getgrgid')) {
                     $owner = posix_getpwuid(fileowner($path . '/' . $f));
                     $group = posix_getgrgid(filegroup($path . '/' . $f));
-                    if ($owner === false) {
-                        $owner = array('name' => '?');
-                    }
-                    if ($group === false) {
-                        $group = array('name' => '?');
-                    }
                 } else {
                     $owner = array('name' => '?');
                     $group = array('name' => '?');
@@ -2172,7 +2131,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                         <?php echo $filesize; ?>
                         </span></td>
                     <td data-order="b-<?php echo $date_sorting;?>"><?php echo $modif ?></td>
-                    <?php if (!FM_IS_WIN && !$hide_Cols): ?>
+                    <?php if (!FM_IS_WIN && !$GLOBALS['hide_Cols']): ?>
                         <td><?php if (!FM_READONLY): ?><a title="<?php echo 'Change Permissions' ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;chmod=<?php echo urlencode($f) ?>"><?php echo $perms ?></a><?php else: ?><?php echo $perms ?><?php endif; ?>
                         </td>
                         <td><?php echo fm_enc($owner['name'] . ':' . $group['name']) ?></td>
@@ -2197,14 +2156,14 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 <tfoot>
                     <tr><?php if (!FM_READONLY): ?>
                             <td></td><?php endif; ?>
-                        <td colspan="<?php echo (!FM_IS_WIN && !$hide_Cols) ? '6' : '4' ?>"><em><?php echo lng('Folder is empty') ?></em></td>
+                        <td colspan="<?php echo (!FM_IS_WIN && !$GLOBALS['hide_Cols']) ? '6' : '4' ?>"><em><?php echo lng('Folder is empty') ?></em></td>
                     </tr>
                 </tfoot>
                 <?php
             } else { ?>
                 <tfoot>
                     <tr>
-                        <td class="gray" colspan="<?php echo (!FM_IS_WIN && !$hide_Cols) ? (FM_READONLY ? '6' :'7') : (FM_READONLY ? '4' : '5') ?>">
+                        <td class="gray" colspan="<?php echo (!FM_IS_WIN && !$GLOBALS['hide_Cols']) ? (FM_READONLY ? '6' :'7') : (FM_READONLY ? '4' : '5') ?>">
                             <?php echo lng('FullSize').': <span class="badge text-bg-light border-radius-0">'.fm_get_filesize($all_files_size).'</span>' ?>
                             <?php echo lng('File').': <span class="badge text-bg-light border-radius-0">'.$num_files.'</span>' ?>
                             <?php echo lng('Folder').': <span class="badge text-bg-light border-radius-0">'.$num_folders.'</span>' ?>
@@ -2249,17 +2208,18 @@ fm_show_footer();
 /**
  * It prints the css/js files into html
  * @param key The key of the external file to print.
+ * @return The value of the key in the  array.
  */
 function print_external($key) {
-    global $external;
+    //global $external;
 
-    if(!array_key_exists($key, $external)) {
+    if(!array_key_exists($key, $GLOBALS['external'])) {
         // throw new Exception('Key missing in external: ' . key);
         echo "<!-- EXTERNAL: MISSING KEY $key -->";
         return;
     }
 
-    echo "$external[$key]";
+    echo $GLOBALS['external'][$key];
 }
 
 /**
@@ -2533,30 +2493,6 @@ function fm_get_parent_path($path)
     return false;
 }
 
-function fm_get_display_path($file_path)
-{
-    global $path_display_mode, $root_path, $root_url;
-    switch ($path_display_mode) {
-        case 'relative':
-            return array(
-                'label' => 'Path',
-                'path' => fm_enc(fm_convert_win(str_replace($root_path, '', $file_path)))
-            );
-        case 'host':
-            $relative_path = str_replace($root_path, '', $file_path);
-            return array(
-                'label' => 'Host Path',
-                'path' => fm_enc(fm_convert_win('/' . $root_url . '/' . ltrim(str_replace('\\', '/', $relative_path), '/')))
-            );
-        case 'full':
-        default:
-            return array(
-                'label' => 'Full Path',
-                'path' => fm_enc(fm_convert_win($file_path))
-            );
-    }
-}
-
 /**
  * Check file is in exclude list
  * @param string $file
@@ -2564,15 +2500,15 @@ function fm_get_display_path($file_path)
  */
 function fm_is_exclude_items($file) {
     $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-    if (isset($exclude_items) and sizeof($exclude_items)) {
-        unset($exclude_items);
+    if (isset($GLOBALS['exclude_items']) and sizeof($GLOBALS['exclude_items'])) {
+        unset($GLOBALS['exclude_items']);
     }
 
-    $exclude_items = FM_EXCLUDE_ITEMS;
+    $GLOBALS['exclude_items'] = FM_EXCLUDE_ITEMS;
     if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-        $exclude_items = unserialize($exclude_items);
+        $GLOBALS['exclude_items'] = unserialize($GLOBALS['exclude_items']);
     }
-    if (!in_array($file, $exclude_items) && !in_array("*.$ext", $exclude_items)) {
+    if (!in_array($file, $GLOBALS['exclude_items']) && !in_array("*.$ext", $GLOBALS['exclude_items'])) {
         return true;
     }
     return false;
@@ -2588,11 +2524,10 @@ function fm_get_translations($tr) {
         $content = @file_get_contents('translation.json');
         if($content !== FALSE) {
             $lng = json_decode($content, TRUE);
-            global $lang_list;
             foreach ($lng["language"] as $key => $value)
             {
                 $code = $value["code"];
-                $lang_list[$code] = $value["name"];
+                $GLOBALS['lang_list'][$code] = $value["name"];
                 if ($tr)
                     $tr[$code] = $value["translation"];
             }
@@ -3567,7 +3502,7 @@ function fm_show_nav_path($path)
                 <ul class="navbar-nav justify-content-end <?php echo fm_get_theme();  ?>">
                     <li class="nav-item mr-2">
                         <div class="input-group input-group-sm mr-1" style="margin-top:4px;">
-                            <input type="text" class="form-control" placeholder="<?php echo lng('Search') ?>" aria-label="<?php echo lng('Search') ?>" aria-describedby="search-addon2" id="search-addon">
+                            <input type="text" class="form-control" placeholder="<?php echo lng('Filter') ?>" aria-label="<?php echo lng('Search') ?>" aria-describedby="search-addon2" id="search-addon">
                             <div class="input-group-append">
                                 <span class="input-group-text brl-0 brr-0" id="search-addon2"><i class="fa fa-search"></i></span>
                             </div>
@@ -3765,9 +3700,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
         .message.ok { border-color:green;color:green  }
         .message.error { border-color:red;color:red  }
         .message.alert { border-color:orange;color:orange  }
-        .preview-img { max-width:100%;max-height:80vh;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAKklEQVR42mL5//8/Azbw+PFjrOJMDCSCUQ3EABZc4S0rKzsaSvTTABBgAMyfCMsY4B9iAAAAAElFTkSuQmCC);cursor:zoom-in }
-        input#preview-img-zoomCheck[type=checkbox] { display:none }
-        input#preview-img-zoomCheck[type=checkbox]:checked ~ label > img { max-width:none;max-height:none;cursor:zoom-out }
+        .preview-img { max-width:100%;max-height:80vh;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAKklEQVR42mL5//8/Azbw+PFjrOJMDCSCUQ3EABZc4S0rKzsaSvTTABBgAMyfCMsY4B9iAAAAAElFTkSuQmCC) }
         .inline-actions > a > i { font-size:1em;margin-left:5px;background:#3785c1;color:#fff;padding:3px 4px;border-radius:3px; }
         .preview-video { position:relative;max-width:100%;height:0;padding-bottom:62.5%;margin-bottom:10px  }
         .preview-video video { position:absolute;width:100%;height:100%;left:0;top:0;background:#000  }
